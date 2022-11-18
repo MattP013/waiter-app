@@ -1,0 +1,10 @@
+tecnologias 
+node 
+express
+typescript
+docker 
+mongo
+vite
+react
+
+short circuiting operator
