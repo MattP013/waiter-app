@@ -10,14 +10,26 @@ interface OrdersBoardProps{
 function OrdersBoard({icon, title, orders}:OrdersBoardProps) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedOrder, setselectedOrder] = useState<Order | null>(null);
+
   function handleOpenModal(order:Order){
     setModalVisible(true);
     setselectedOrder(order);
   }
 
+  function handleCloseModal(){
+    setModalVisible(false);
+    setselectedOrder(null);
+  }
+
+
+
   return (
       <Board>
-        <OrderModal visible={isModalVisible} order={selectedOrder}></OrderModal>
+        <OrderModal
+          visible={isModalVisible}
+          order={selectedOrder}
+          onClose={handleCloseModal}
+        ></OrderModal>
           <header>
             <span>{icon}</span>
             <strong>{title}</strong>

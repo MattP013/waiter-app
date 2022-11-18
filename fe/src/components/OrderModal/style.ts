@@ -98,4 +98,49 @@ export const OrderDetails = styled.div`
       }
     }
   }
+
+  .total{
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+    margin-top: 24px;
+
+  }
+
+  span{
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
 `;
+
+export const Action = styled.div`
+display: flex;
+justify-content: space-between;
+flex-direction: column;
+margin-top: 32px;
+.primary{
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 48px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  gap: 8px;
+
+}
+
+.secondary{
+  padding: 12px 24px;
+  color: #d73b35;
+  border: none;
+  background: transparent;
+  margin-top: 12px;
+}
+`
+
