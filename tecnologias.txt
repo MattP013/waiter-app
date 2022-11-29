@@ -8,3 +8,9 @@ vite
 react
 
 short circuiting operator
+
+##SafeAreaView - Container que se ajusta com a area util de dispositivo ios
+## Platform - identifica se o dispositivo e ios ou android para realizar o tratamento de acordo com o sistema
+ 
+ box-shadow - sombra para ios
+elevation - sombra para android
