@@ -41,7 +41,7 @@ export function Main(){
         </CategoriesContainer>
         <MenuContainer></MenuContainer>
       </Container>
-      <Menu></Menu>
+      <Menu />
       <Footer>
         <FooterContainer>
           {
