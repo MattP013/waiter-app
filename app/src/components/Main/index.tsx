@@ -19,6 +19,10 @@ export function Main(){
     quantity: 1,
     product: products[0]
   },
+  {
+    quantity: 3,
+    product: products[1]
+  },
  ]);
 
   function handleSaveTable(table:string){
