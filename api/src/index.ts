@@ -18,5 +18,5 @@ mongoose.connect('mongodb://localhost:27017')
     });
 
 })
-.catch(()=>console.log('Erro de conexão'));
+.catch((e)=>console.log('Erro de conexão: ', e));
 

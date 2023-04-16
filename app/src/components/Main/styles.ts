@@ -5,14 +5,16 @@ const isAndroid = Platform.OS === 'android';
 export const Container = styled.SafeAreaView`
   margin-top: ${isAndroid ? `${StatusBar.currentHeight}}px` : '0'};
   background: #fafafa;
+  flex: 1
 `
 export const CategoriesContainer = styled.View`
   height: 73px;
-  align-items: center;
-  justify-content: center;
+  margin-top: 34px;
+  /* align-items: center;
+  justify-content: center; */
 `
 export const MenuContainer = styled.View`
-  flex: 1;
+  flex: 1 0 auto;
 `;
 
 export const Footer = styled.View`
@@ -24,3 +26,9 @@ export const Footer = styled.View`
 
 export const FooterContainer = styled.SafeAreaView`
 `;
+
+export const CenteredContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`

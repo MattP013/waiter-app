@@ -1,6 +1,5 @@
 import { useState } from "react"
-import { products } from "../../mocks/products"
-import { CartItem } from "../../Types/CartItem"
+import { products as mockProducts } from "../../mocks/products"
 import { Button } from "../Button"
 import { Cart } from "../Cart"
 import { Categories } from "../Categories"
@@ -9,48 +8,127 @@ import { Menu } from "../Menu"
 import { ProductModal } from "../ProductModal"
 import { TableModal } from "../TableModal"
 import { Text } from "../Text"
-import { CategoriesContainer, Container, Footer, FooterContainer, MenuContainer } from "./styles"
+import { CategoriesContainer, CenteredContainer, Container, Footer, FooterContainer, MenuContainer } from "./styles"
+import { Product } from "../../Types/Product"
+import { CartItem } from "../../Types/CartItem"
+import { ActivityIndicator } from "react-native"
+import { Empty } from "../Icons/Empty"
+
+
 export function Main(){
 
  const [isTableModalVisible, setIsTableModalVisible] = useState(false);
  const [selectedTable, setSelectedTable] = useState('');
- const [cartItems, setCartItems] = useState<CartItem[]>([
-  {
-    quantity: 1,
-    product: products[0]
-  },
-  {
-    quantity: 3,
-    product: products[1]
-  },
- ]);
-
+ const [cartItems, setCartItems] = useState<CartItem[]>([]);
+ const [isLoading] = useState(false);
+ const [products] = useState<Product[]>(mockProducts)
   function handleSaveTable(table:string){
     setSelectedTable(table);
   }
 
-  function handleCancelOrder(){
+  function handleResetOrder(){
     setSelectedTable('');
+    setCartItems([]);
   }
+
+
+  function handleAddToCart(product: Product)
+  {
+    if (!selectedTable) {
+      setIsTableModalVisible(true);
+    }
+
+    setCartItems((prevState) => {
+      const itemIndex = prevState.findIndex(
+        cartItem => cartItem.product._id === product._id
+      );
+
+      if (itemIndex < 0){
+        return prevState.concat({quantity: 1, product})
+      }
+
+      const newCartItems = [...prevState];
+      const item = newCartItems[itemIndex]
+      newCartItems[itemIndex] = {
+        ...item,
+        quantity: item.quantity + 1,
+      }
+
+      return newCartItems;
+    })
+  }
+
+  function handleDecrementCartItem(product: Product) {
+    setCartItems((prevState) => {
+      const itemIndex = prevState.findIndex(
+        cartItem => cartItem.product._id === product._id
+      );
+
+      const item = prevState[itemIndex]
+      const newCartItems = [...prevState];
+
+       if (item.quantity === 1) {
+          newCartItems.splice(itemIndex, 1);
+
+          return newCartItems
+       }
+
+      newCartItems[itemIndex] = {
+        ...item,
+        quantity: item.quantity - 1
+      };
+
+      return newCartItems;
+
+    })
+  }
+
   return (
     <>
 
       <Container>
         <Header
           selectedTable={selectedTable}
-          onCencelOrder={handleCancelOrder}
+          onCencelOrder={handleResetOrder}
         />
-        <CategoriesContainer>
-          <Categories></Categories>
-        </CategoriesContainer>
-        <MenuContainer></MenuContainer>
+        {!isLoading && (
+          <>
+            <CategoriesContainer>
+            <Categories></Categories>
+            </CategoriesContainer>
+
+           {products.length > 0 ?
+              <MenuContainer>
+                <Menu products={products} onAddToCart={handleAddToCart} />
+              </MenuContainer>
+              :
+              <CenteredContainer>
+                <Empty />
+                <Text color="#666" style={{marginTop: 24}}>
+                  Nenhum produto foi encontrado!
+                </Text>
+              </CenteredContainer>}
+          </>
+        )}
+
+
+        {
+          isLoading && (
+            <CenteredContainer>
+              <ActivityIndicator color={"#D73835"} size={"large"}></ActivityIndicator>
+            </CenteredContainer>
+          )
+        }
       </Container>
-      <Menu />
       <Footer>
         <FooterContainer>
           {
             !selectedTable && (
-              <Button onPress={()=>setIsTableModalVisible(true)}>
+              <Button
+
+              onPress={()=>setIsTableModalVisible(true)}
+              disabled={isLoading}
+              >
               Novo Pedido
               </Button>
             )
@@ -58,7 +136,7 @@ export function Main(){
 
           {
             selectedTable &&(
-              <Cart cartItems={cartItems}/>
+              <Cart cartItems={cartItems} onAdd={handleAddToCart} onDecrement={handleDecrementCartItem} onConfirmOrder={handleResetOrder}/>
             )
           }
 
